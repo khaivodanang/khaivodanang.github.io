@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>Nhật ký đầu tư · Võ Doãn Khải</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Nhật ký đầu tư cá nhân của Võ Doãn Khải: hiệu suất danh mục so với VN-Index, nhật ký giao dịch, báo cáo định giá HDB theo khung CFA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
+<style>
+/* Layout: research-house factsheet. Narrow masthead, KPI strip, then numbered report sections in one 1080px column. */
+:root{
+  --bg:#FFFFFF; --soft:#F3F5F7; --ink:#13202C; --ink2:#46525E; --muted:#76818C; --rule:#DFE3E7;
+  --acc:#8A1C2B; --acc-soft:#F6E9EB; --pos:#1D7444; --neg:#B3261E; --pos-soft:#E4F1E9; --neg-soft:#F8E6E4;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#008300;
+  --f-display:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --f-body:"Be Vietnam Pro", "Segoe UI", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0E151B; --soft:#151E26; --ink:#E7EBEE; --ink2:#B3BCC5; --muted:#8892A0; --rule:#26313B;
+  --acc:#E08A95; --acc-soft:#2A1A1E; --pos:#55BD82; --neg:#F07D73; --pos-soft:#14281D; --neg-soft:#2E1817;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#0E151B; --soft:#151E26; --ink:#E7EBEE; --ink2:#B3BCC5; --muted:#8892A0; --rule:#26313B;
+  --acc:#E08A95; --acc-soft:#2A1A1E; --pos:#55BD82; --neg:#F07D73; --pos-soft:#14281D; --neg-soft:#2E1817;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; color-scheme:dark; }
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:64px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+a{color:var(--acc);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:2px}
+.num,td.n,th.n{font-variant-numeric:tabular-nums}
+.pos{color:var(--pos)} .neg{color:var(--neg)}
+
+/* masthead */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--bg)}
+.mast{position:sticky;top:env(safe-area-inset-top, 0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--rule)}
+.mast .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:56px;flex-wrap:wrap;padding-block:8px}
+.brand{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--ink)}
+.brand b{font-family:var(--f-display);font-weight:600;font-size:19px;letter-spacing:-.01em}
+.brand span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.mast nav{display:flex;gap:2px;flex-wrap:wrap}
+.mast nav a{font-size:13px;color:var(--ink2);text-decoration:none;padding:6px 10px;border-radius:3px}
+.mast nav a:hover{background:var(--soft);color:var(--ink)}
+
+/* hero */
+.hero{padding-block:48px 28px;border-bottom:3px solid var(--acc)}
+.hero .grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:40px;align-items:start}
+.eyebrow{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);font-weight:600;margin:0 0 10px}
+h1{font-family:var(--f-display);font-weight:600;font-size:clamp(32px,5vw,46px);line-height:1.1;letter-spacing:-.015em;margin:0 0 16px;text-wrap:balance}
+.lede{font-size:17px;color:var(--ink2);max-width:62ch;margin:0}
+.lede strong{color:var(--ink);font-weight:600}
+.facts{border:1px solid var(--rule);font-size:13px}
+.facts h2{margin:0;padding:8px 14px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--bg);font-weight:600}
+.facts dl{margin:0;display:grid;grid-template-columns:auto 1fr}
+.facts dt,.facts dd{margin:0;padding:6px 14px;border-top:1px solid var(--rule)}
+.facts dt{color:var(--muted)} .facts dd{text-align:right;font-weight:500;font-variant-numeric:tabular-nums}
+
+/* KPI strip */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--rule)}
+.kpi{padding:22px 20px 20px 0;display:flex;flex-direction:column;gap:4px}
+.kpi + .kpi{padding-left:20px;border-left:1px solid var(--rule)}
+.kpi .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.kpi .v{font-size:32px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.15}
+.kpi .s{font-size:13px;color:var(--ink2)}
+
+/* sections */
+section.block{padding-block:48px 8px}
+.shead{display:grid;grid-template-columns:56px minmax(0,1fr);gap:0 8px;margin-bottom:20px;align-items:baseline}
+.shead .no{font-family:var(--f-display);font-size:15px;color:var(--acc);font-weight:600}
+.shead h2{font-family:var(--f-display);font-weight:600;font-size:27px;line-height:1.2;margin:0;letter-spacing:-.01em;text-wrap:balance}
+.shead p{grid-column:2;margin:6px 0 0;color:var(--ink2);max-width:70ch}
+.body{margin-left:64px}
+h3{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2);margin:28px 0 10px;font-weight:600}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px}
+.panel{min-width:0}
+.cap{font-size:12px;color:var(--muted);margin:6px 0 0}
+
+/* insights */
+.notes{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px}
+.notes li{padding:14px 0 14px 0;border-top:1px solid var(--rule);display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;font-size:14px}
+.tag{font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding:2px 0;align-self:start}
+.tag.t-good{color:var(--pos)} .tag.t-watch{color:var(--neg)} .tag.t-fact{color:var(--muted)}
+
+/* tables */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+thead th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;border-bottom:1px solid var(--ink)}
+th.n,td.n{text-align:right;white-space:nowrap}
+td.sym{font-weight:600}
+tbody tr:hover td{background:var(--soft)}
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:10px;white-space:nowrap}
+.pill.pos{background:var(--pos-soft)} .pill.neg{background:var(--neg-soft)}
+.wbar{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.wbar i{display:block;height:8px;background:var(--s1);border-radius:0 2px 2px 0}
+
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.filters button{font:inherit;font-size:12.5px;padding:4px 11px;border:1px solid var(--rule);background:var(--bg);color:var(--ink2);border-radius:14px;cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* charts */
+.chart{position:relative;min-width:0}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart text{fill:var(--muted);font-family:var(--f-body);font-size:11px}
+.chart .grid line{stroke:var(--rule);stroke-width:1}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink2);margin:0 0 10px;padding:0;list-style:none}
+.legend li{display:flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.legend i.dot{border-radius:50%}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12px;line-height:1.45;padding:7px 10px;border-radius:3px;white-space:nowrap;transform:translate(-50%,calc(-100% - 12px));z-index:3}
+.tip b{font-weight:600}
+
+/* research */
+.report{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:32px;border:1px solid var(--rule)}
+.report .main{padding:24px 0 24px 24px;min-width:0}
+.report aside{background:var(--soft);padding:20px;font-size:13px}
+.rec{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--rule);margin:14px 0 18px}
+.rec>div{padding:10px 12px;border-left:1px solid var(--rule)} .rec>div:first-child{border-left:none;background:var(--pos);color:#fff}
+.rec .k{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)} .rec>div:first-child .k{color:#fff;opacity:.85}
+.rec .v{font-size:21px;font-weight:600;font-variant-numeric:tabular-nums}
+.report h4{margin:0 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--acc)}
+.report aside table{font-size:13px} .report aside td{padding:5px 0;border-bottom:1px solid var(--rule)} .report aside td:last-child{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.report ol{padding-left:20px;margin:0 0 12px} .report li{margin:6px 0}
+.dl{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.dl a{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;text-decoration:none;border:1px solid var(--ink);color:var(--ink);padding:7px 14px;border-radius:2px}
+.dl a:hover{background:var(--ink);color:var(--bg)}
+.dl a small{font-weight:400;color:inherit;opacity:.7}
+.callout{border-left:3px solid var(--neg);background:var(--neg-soft);padding:12px 16px;font-size:14px;margin:16px 0 0}
+
+/* case study timeline */
+.tl{list-style:none;margin:0;padding:0;border-left:2px solid var(--rule)}
+.tl li{position:relative;padding:0 0 18px 22px;display:grid;grid-template-columns:130px minmax(0,1fr);gap:12px}
+.tl li::before{content:"";position:absolute;left:-6px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--muted)}
+.tl li.buy::before{border-color:var(--s1);background:var(--s1)} .tl li.sell::before{border-color:var(--acc);background:var(--acc)} .tl li.ca::before{border-color:var(--s3)}
+.tl .d{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.tl .t b{font-weight:600} .tl .t span{display:block;font-size:13px;color:var(--ink2)}
+.lessons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px}
+.lessons ul{margin:0;padding-left:18px} .lessons li{margin:8px 0;font-size:14px}
+
+details{border-top:1px solid var(--rule);padding:12px 0}
+summary{cursor:pointer;font-weight:600;font-size:14px}
+.method{columns:2;column-gap:40px;font-size:14px;color:var(--ink2)} .method p{margin:0 0 12px;break-inside:avoid}
+footer{margin-top:56px;border-top:1px solid var(--rule);padding-block:24px 40px;font-size:12.5px;color:var(--muted)}
+footer .wrap{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:32px}
+footer p{margin:0 0 8px}
+
+@media (max-width:860px){
+  .hero .grid,.two,.report,.lessons,footer .wrap{grid-template-columns:minmax(0,1fr)}
+  .report .main{padding:20px 20px 0}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi:nth-child(3){padding-left:0;border-left:none}
+  .kpi:nth-child(n+3){border-top:1px solid var(--rule)}
+  .notes{grid-template-columns:minmax(0,1fr)}
+  .body{margin-left:0} .shead{grid-template-columns:40px minmax(0,1fr)}
+  .method{columns:1}
+}
+@media (max-width:520px){
+  .mast nav{display:none}
+  .kpi .v{font-size:26px}
+  .rec{grid-template-columns:repeat(2,minmax(0,1fr))} .rec>div:nth-child(3){border-left:none} .rec>div:nth-child(n+3){border-top:1px solid var(--rule)}
+  .tl li{grid-template-columns:minmax(0,1fr);gap:2px}
+  .notes li{grid-template-columns:minmax(0,1fr);gap:2px}
+}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <a class="brand" href="#top"><b>Võ Doãn Khải</b><span>Nhật ký đầu tư</span></a>
+    <nav aria-label="Mục lục">
+      <a href="#hieu-suat">Hiệu suất</a>
+      <a href="#danh-muc">Danh mục</a>
+      <a href="#giao-dich">Giao dịch</a>
+      <a href="#nghien-cuu">Nghiên cứu</a>
+      <a href="#case-hdb">Case study</a>
+      <a href="#phuong-phap">Phương pháp</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<div class="wrap">
+  <section class="hero">
+    <div class="grid">
+      <div>
+        <p class="eyebrow">Tài khoản cá nhân · HOSE / HNX · 02/2023 – 11/2026</p>
+        <h1>Nhật ký đầu tư cổ phiếu Việt Nam</h1>
+        <p class="lede">Ghi chép toàn bộ quá trình đầu tư của tôi trong gần bốn năm: <strong>78 lệnh khớp, 9 mã, 18 sự kiện quyền</strong>, dựng lại từ lịch sử giao dịch và đối chiếu khớp với báo cáo công ty chứng khoán. Trang này trình bày cả phần làm tốt lẫn phần cần sửa, kèm một báo cáo định giá theo khung CFA Research Challenge. Mọi kết quả chỉ công bố bằng %, không công bố số tiền.</p>
+      </div>
+      <div class="facts" role="group" aria-label="Thông tin tài khoản">
+        <h2>Thông tin tài khoản</h2>
+        <dl>
+          <dt>Dữ liệu đến</dt><dd>03/11/2026</dd>
+          <dt>Chỉ số tham chiếu</dt><dd>VN-Index</dd>
+          <dt>Phong cách</dt><dd>Cơ bản, nắm giữ trung hạn</dd>
+          <dt>Ngành chính</dt><dd>Ngân hàng, chứng khoán</dd>
+          <dt>Nắm giữ bình quân</dt><dd id="f-hold"></dd>
+          <dt>Số mã đang giữ</dt><dd id="f-open"></dd>
+          <dt>Phí, thuế</dt><dd>Đã trừ (ước tính)</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <div class="kpis" id="kpis"></div>
+
+  <!-- 1 -->
+  <section class="block" id="hieu-suat">
+    <div class="shead"><span class="no">01</span><h2>Hiệu suất so với VN-Index</h2>
+      <p>XIRR tính trên dòng tiền thực tế của tài khoản. Để so sánh công bằng, cùng dòng tiền đó được giả định đầu tư vào VN-Index (phương pháp PME).</p></div>
+    <div class="body">
+      <div class="two">
+        <div class="panel">
+          <h3>Lợi suất năm hoá (XIRR)</h3>
+          <div class="chart" id="c-xirr"></div>
+          <p class="cap">Danh mục: trước và sau phí, thuế. VN-Index: cùng dòng tiền mua, bán.</p>
+        </div>
+        <div class="panel">
+          <h3>Tự đánh giá</h3>
+          <ul class="notes" id="notes" style="grid-template-columns:minmax(0,1fr)"></ul>
+        </div>
+      </div>
+
+      <h3>Thời điểm bán so với diễn biến VN-Index</h3>
+      <ul class="legend">
+        <li><i style="background:var(--ink2);height:2px;width:16px;border-radius:0"></i>VN-Index (tuần)</li>
+        <li><i class="dot" style="background:var(--pos)"></i>Lệnh bán có lãi cao hơn chỉ số cùng kỳ</li>
+        <li><i class="dot" style="background:var(--neg)"></i>Lệnh bán có lãi thấp hơn chỉ số</li>
+      </ul>
+      <div class="chart" id="c-index"></div>
+      <p class="cap">Mỗi điểm là một ngày bán (gộp các lô cùng ngày, cùng mã). Rê chuột hoặc chạm để xem lãi của lệnh và mức tăng của VN-Index trong cùng thời gian nắm giữ. Nguồn: lịch sử khớp lệnh; VN-Index từ Investing.com.</p>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="block" id="danh-muc">
+    <div class="shead"><span class="no">02</span><h2>Danh mục và mức độ tập trung</h2>
+      <p>Tỷ trọng theo ngành qua từng tháng, và danh mục hiện tại. Mức tập trung là rủi ro lớn nhất tôi đang xử lý.</p></div>
+    <div class="body">
+      <ul class="legend" id="sec-legend"></ul>
+      <div class="chart" id="c-sector"></div>
+      <p class="cap">Tỷ trọng theo giá trị thị trường cuối tháng. Ngân hàng chiếm phần lớn danh mục gần như suốt giai đoạn.</p>
+      <div class="two">
+        <div class="panel">
+          <h3>Danh mục 03/11/2026</h3>
+          <div class="tbl"><table id="t-current"><thead><tr><th>Mã</th><th>Ngành</th><th class="n">Tỷ trọng</th><th class="n">Lãi/lỗ chưa thực hiện</th></tr></thead><tbody></tbody></table></div>
+          <p class="cap">Gồm 3.150 cổ phiếu HDB cổ tức đang chờ giao dịch.</p>
+        </div>
+        <div class="panel">
+          <h3>Lãi đã thực hiện theo mã</h3>
+          <div class="tbl"><table id="t-realized"><thead><tr><th>Mã</th><th class="n">Lãi ròng</th><th class="n">Nắm giữ</th><th class="n">Đóng góp</th></tr></thead><tbody></tbody></table></div>
+          <p class="cap">Lãi ròng trên giá vốn sau phí, thuế. Đóng góp: tỷ lệ trong tổng lãi đã thực hiện.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="block" id="giao-dich">
+    <div class="shead"><span class="no">03</span><h2>Nhật ký giao dịch</h2>
+      <p>Các lần bán đã thực hiện và sự kiện quyền. Cột "So với chỉ số" cho biết lệnh bán có thắng VN-Index trong cùng khoảng thời gian nắm giữ hay không.</p></div>
+    <div class="body">
+      <div class="filters" id="filters" role="group" aria-label="Lọc theo mã"></div>
+      <div class="tbl"><table id="t-trades"><thead><tr><th>Ngày bán</th><th>Mã</th><th class="n">Số lô</th><th class="n">Lãi ròng</th><th class="n">Nắm giữ</th><th class="n">VN-Index cùng kỳ</th><th class="n">So với chỉ số</th></tr></thead><tbody></tbody></table></div>
+      <details>
+        <summary>Sự kiện quyền đã ghi nhận (<span id="ev-n"></span>)</summary>
+        <div class="tbl"><table id="t-events"><thead><tr><th>Ngày GDKHQ</th><th>Mã</th><th>Loại</th><th>Nội dung</th><th class="n">Số CP tăng</th><th class="n">Giá vốn</th></tr></thead><tbody></tbody></table></div>
+        <p class="cap">Nguồn: Simplize, CafeF, Báo Đầu tư. Cổ tức tiền giảm giá vốn; cổ phiếu thưởng và cổ tức cổ phiếu tăng số lượng với giá 0; quyền mua cộng giá đặt mua.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="block" id="nghien-cuu">
+    <div class="shead"><span class="no">04</span><h2>Nghiên cứu: định giá HDBank (HDB)</h2>
+      <p>Báo cáo phân tích cổ phiếu 6 trang theo khung CFA Institute Research Challenge, kèm mô hình Excel toàn bộ bằng công thức. Đây là vị thế lớn nhất trong danh mục, nên tôi định giá lại để kiểm tra luận điểm nắm giữ.</p></div>
+    <div class="body">
+      <div class="report">
+        <div class="main">
+          <p class="eyebrow" style="margin:0">Báo cáo ngày 04/11/2026 · HOSE: HDB · Ngân hàng</p>
+          <div class="rec">
+            <div><div class="k">Khuyến nghị</div><div class="v">MUA</div></div>
+            <div><div class="k">Giá mục tiêu 12T</div><div class="v">29.700</div></div>
+            <div><div class="k">Giá 03/11/2026</div><div class="v">21.800</div></div>
+            <div><div class="k">Tiềm năng</div><div class="v pos">+36,2%</div></div>
+          </div>
+          <h4>Luận điểm chính</h4>
+          <ol>
+            <li><b>Sinh lời cao, chi phí thấp.</b> ROE 9T2026 đạt 22,8%, cao hơn bình quân ngành khoảng 6 điểm %. CIR 24,9% thuộc nhóm thấp nhất ngành nhờ hơn 94% giao dịch cá nhân qua kênh số. ROE dự phóng 19,3% tương ứng P/B hợp lý 1,81x, so với 1,55x thị trường đang trả.</li>
+            <li><b>Tăng trưởng quy mô vượt ngành.</b> Tín dụng 9T2026 tăng 28,55% với hạn mức 33% nhờ nhận chuyển giao Ngân hàng Đông Á (Vikki Digital Bank). Đổi lại, thu nhập lãi thuần trên tổng tài sản giảm từ 4,3% xuống 3,5%; mô hình không giả định phục hồi.</li>
+            <li><b>Hệ sinh thái mở rộng thu nhập ngoài lãi.</b> HDS lãi trước thuế 9T2026 gấp 3,7 lần cùng kỳ và dự kiến IPO quý 4/2026, chất xúc tác chưa đưa vào mô hình.</li>
+          </ol>
+          <div class="chart" id="c-val"></div>
+          <p class="cap">Giá trị mỗi cổ phiếu theo từng phương pháp (đồng), so với giá hiện tại và giá mục tiêu.</p>
+          <div class="callout"><b>Điều gì khiến tôi sai?</b> Nợ xấu hợp nhất tăng từ 1,66% lên 2,55% trong 9 tháng, nợ nhóm 2 lên 4,70%, tỷ lệ bao phủ chỉ 51%. Nếu trích lập mạnh hơn giả định khiến ROE dài hạn còn 15% và chi phí vốn lên 15%, giá trị nội tại còn khoảng 17.700 đồng (−18,8%).</div>
+          <div class="dl">
+            <a href="research/HDB_report.pdf">Báo cáo PDF <small>6 trang</small></a>
+            <a href="research/HDB_valuation_model.xlsx">Mô hình Excel <small>.xlsx</small></a>
+            <a href="research/HDB_report.html">Bản web</a>
+          </div>
+        </div>
+        <aside>
+          <h4>Định giá</h4>
+          <table>
+            <tr><td>Residual Income (50%)</td><td>26.883</td></tr>
+            <tr><td>FCFE theo vốn yêu cầu (25%)</td><td>26.429</td></tr>
+            <tr><td>P/B hợp lý (25%)</td><td>25.678</td></tr>
+            <tr><td>Giá trị nội tại</td><td>26.468</td></tr>
+            <tr><td>Kịch bản xấu / tốt</td><td>17.700 / 31.100</td></tr>
+          </table>
+          <h4 style="margin-top:18px">Chi phí vốn</h4>
+          <table>
+            <tr><td>Beta (Blume, 196 tuần)</td><td>0,94</td></tr>
+            <tr><td>Lãi suất phi rủi ro</td><td>4,35%</td></tr>
+            <tr><td>Phần bù rủi ro thị trường</td><td>8,0%</td></tr>
+            <tr><td>Phần bù riêng HDB</td><td>1,5%</td></tr>
+            <tr><td>Chi phí vốn chủ (ke)</td><td>13,39%</td></tr>
+          </table>
+          <h4 style="margin-top:18px">Vì sao không dùng DCF FCFF</h4>
+          <p style="margin:0">Với ngân hàng, nợ là nguyên liệu kinh doanh chứ không phải nguồn tài trợ, nên tôi định giá trực tiếp vốn chủ sở hữu. Beta hồi quy từ lợi suất tuần HDB so với VN-Index (R² 0,35).</p>
+        </aside>
+      </div>
+      <p class="cap">Công bố: tác giả đang nắm giữ HDB tại thời điểm viết báo cáo (CFA Standard VI(A)). Báo cáo phục vụ mục đích học tập, không phải khuyến nghị đầu tư.</p>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="block" id="case-hdb">
+    <div class="shead"><span class="no">05</span><h2>Case study: HDB, 02/2023 – 11/2026</h2>
+      <p>HDB đóng góp 67% lãi đã thực hiện của tài khoản. XIRR riêng mã này khoảng 34%/năm, tính cả mua, bán, cổ tức tiền và giá trị hiện tại.</p></div>
+    <div class="body">
+      <div class="two">
+        <div class="panel">
+          <h3>Diễn biến vị thế</h3>
+          <ol class="tl">
+            <li class="buy"><span class="d">02 – 06/2023</span><span class="t"><b>Mua lần đầu, 3 đợt</b><span>Giá 17,6 – 18,5 nghìn đồng</span></span></li>
+            <li class="ca"><span class="d">05 – 07/2023</span><span class="t"><b>Cổ tức tiền 10%, cổ tức cổ phiếu 15%</b><span>Giá vốn điều chỉnh về 15,63</span></span></li>
+            <li class="sell"><span class="d">02/2024</span><span class="t"><b>Bán khoảng 37% vị thế</b><span>Giá 23,5 – 23,6, lãi +50%</span></span></li>
+            <li class="ca"><span class="d">07 – 12/2024</span><span class="t"><b>Cổ tức tiền 10%, cổ tức cổ phiếu 20%</b></span></li>
+            <li class="buy"><span class="d">12/2024 – 01/2025</span><span class="t"><b>Mua thêm</b><span>Giá 23,2 – 23,45</span></span></li>
+            <li class="buy"><span class="d">09 – 11/2025</span><span class="t"><b>Gom mạnh, vị thế tăng khoảng 4,5 lần</b><span>Giá 28,6 – 30,7</span></span></li>
+            <li class="ca"><span class="d">12/2025</span><span class="t"><b>Cổ tức cổ phiếu 25% và thưởng 4,69%</b><span>Giá vốn điều chỉnh về 20,67</span></span></li>
+            <li class="sell"><span class="d">12/2025 – 01/2026</span><span class="t"><b>Bán khoảng 31% vị thế</b><span>Giá 28,9 – 29,8, lãi +43%</span></span></li>
+            <li class="buy"><span class="d">02/2026</span><span class="t"><b>Mua lại một phần</b><span>Giá 27,3 – 27,45, thấp hơn giá vừa bán khoảng 8%</span></span></li>
+            <li class="ca"><span class="d">10/2026</span><span class="t"><b>Cổ tức cổ phiếu 25% và thưởng 5%</b><span>Cổ phiếu mới đang chờ giao dịch</span></span></li>
+            <li><span class="d">03/11/2026</span><span class="t"><b>Đang nắm giữ, lãi +30,6%</b><span>Giá 21,8 (tương đương khoảng 28,3 trước đợt chia), giá vốn 16,69</span></span></li>
+          </ol>
+          <p class="cap">Một cổ phiếu mua tháng 2/2023 đã thành 2,33 cổ phiếu sau bốn đợt chia. Đơn vị giá: nghìn đồng.</p>
+        </div>
+        <div class="panel">
+          <div class="lessons" style="grid-template-columns:minmax(0,1fr);gap:8px">
+            <div>
+              <h3 class="pos" style="margin-top:0">Điều làm tốt</h3>
+              <ul>
+                <li><b>Nắm giữ đủ lâu để hưởng cổ tức cổ phiếu.</b> Thời gian nắm giữ bình quân khoảng 500 ngày; mỗi đợt chia kéo giá vốn bình quân xuống.</li>
+                <li><b>Chốt lời từng phần, không bán hết.</b> Hai lần bán (02/2024 và 01/2026) đều giữ lại phần lớn vị thế.</li>
+                <li><b>Mua lại thấp hơn giá bán.</b> Bán ở 29,6 – 29,8 tháng 1/2026, mua lại ở 27,3 – 27,45 tháng 2/2026.</li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="neg">Điều cần sửa</h3>
+              <ul>
+                <li><b>Tập trung quá cao.</b> HDB chiếm 77% danh mục, cộng các ngân hàng khác là 80%. Một cú sốc riêng của HDB hoặc của ngành sẽ tác động gần như toàn bộ tài khoản.</li>
+                <li><b>Gom mạnh khi giá đã cao.</b> Đợt mua 09 – 11/2025 cao hơn gần 70% giá mua lần đầu và chiếm phần lớn vốn đang đặt vào HDB. Báo cáo định giá ở mục 04 là cách tôi bổ sung cơ sở định giá cho quyết định này.</li>
+                <li><b>Đánh giá bằng tổng lợi nhuận, không bằng giá vốn.</b> Cổ tức cổ phiếu làm giá vốn giảm nhưng không tạo giá trị mới. Thước đo đúng là XIRR và tăng trưởng vốn chủ của ngân hàng.</li>
+              </ul>
+            </div>
+          </div>
+          <!-- TODO(Steven): thêm luận điểm ban đầu năm 2023 và 2–3 bài học viết bằng lời của bạn. -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="block" id="phuong-phap">
+    <div class="shead"><span class="no">06</span><h2>Phương pháp và công bố</h2></div>
+    <div class="body method">
+      <p><b>Dữ liệu.</b> Lịch sử khớp lệnh và lãi/lỗ đã thực hiện xuất từ tài khoản chứng khoán, ghép với 18 sự kiện quyền thu thập thủ công. Số lượng và giá vốn dựng lại khớp với báo cáo công ty chứng khoán ở mọi mã.</p>
+      <p><b>Giá vốn.</b> Bình quân gia quyền: cổ tức tiền giảm giá vốn, cổ phiếu thưởng và cổ tức cổ phiếu thêm số lượng giá 0, quyền mua cộng giá đặt mua. Quyền tính trên số cổ phiếu nắm giữ trước ngày GDKHQ.</p>
+      <p><b>Thời gian nắm giữ.</b> Theo FIFO; cổ phiếu thưởng kế thừa ngày mua của lô gốc.</p>
+      <p><b>Lợi suất.</b> XIRR theo dòng tiền cổ phiếu, không tính lãi tiền mặt nhàn rỗi. So sánh với VN-Index theo PME: cùng dòng tiền mua, bán chỉ số.</p>
+      <p><b>Chi phí.</b> Phí môi giới ước tính 0,15% mỗi chiều, thuế bán 0,1%, thuế cổ tức tiền 5%.</p>
+      <p><b>Công cụ.</b> Python (pandas, openpyxl) để dựng sổ giao dịch và tính chỉ số; Excel cho mô hình định giá.</p>
+      <p><b>Công bố.</b> Đây là tài khoản cá nhân. Nội dung chỉ nhằm trình bày quy trình đầu tư và phân tích, không phải khuyến nghị mua bán. Tôi không công bố giá trị tiền của tài khoản.</p>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <p><b style="color:var(--ink)">Võ Doãn Khải (Steven)</b> · Thạc sĩ Tài chính (RMIT, dự kiến 2027) · Cử nhân Phân tích Kinh doanh (Deakin, 2025) · Ứng viên CFA Level I</p>
+      <p>Dữ liệu cập nhật đến 03/11/2026. Kết quả trong quá khứ không đảm bảo kết quả tương lai.</p>
+    </div>
+    <div>
+      <p><a href="https://www.linkedin.com/in/doan-khai-vo-2837a0208">LinkedIn</a></p>
+      <p>khaivdanang@gmail.com</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+const D = {"as_of":"2026-11-03","kpi":{"xirr_gross":0.18725,"xirr_net":0.18254,"realized_gross_pct":0.20331,"realized_net_pct":0.1988,"fees_drag_pct_pts":0.00451,"unrealized_pct":0.11597,"win_rate_sells":1.0,"n_sells":32,"n_orders":78,"n_symbols":9,"avg_hold_days":333.70379,"top_weight":0.77302,"top_symbol":"HDB","hhi":0.63497,"effective_n":1.57489,"open_losers":3},"current":[{"symbol":"HDB","sector":"Ngân hàng","weight":0.77302,"unrealized_pct":0.30648},{"symbol":"SSI","sector":"Chứng khoán","weight":0.19103,"unrealized_pct":-0.25683},{"symbol":"ACB","sector":"Ngân hàng","weight":0.02972,"unrealized_pct":-0.07208},{"symbol":"AMV","sector":"Y tế","weight":0.00623,"unrealized_pct":-0.59322}],"realized":[{"symbol":"HDB","sector":"Ngân hàng","gross_pct":0.44338,"net_pct":0.43827,"hold_days":502.59246,"share_of_profit":0.67322,"sells":6,"last_sell":"2026-01-21"},{"symbol":"PVS","sector":"Dầu khí","gross_pct":0.25317,"net_pct":0.24854,"hold_days":95.1215,"share_of_profit":0.12824,"sells":5,"last_sell":"2026-03-06"},{"symbol":"MBS","sector":"Chứng khoán","gross_pct":0.13756,"net_pct":0.13322,"hold_days":218.16071,"share_of_profit":0.09185,"sells":4,"last_sell":"2026-01-12"},{"symbol":"AMV","sector":"Y tế","gross_pct":0.10811,"net_pct":0.10384,"hold_days":381.0,"share_of_profit":0.00629,"sells":3,"last_sell":"2024-02-22"},{"symbol":"TPB","sector":"Ngân hàng","gross_pct":0.09717,"net_pct":0.09293,"hold_days":314.33333,"share_of_profit":0.05647,"sells":4,"last_sell":"2025-02-11"},{"symbol":"ACB","sector":"Ngân hàng","gross_pct":0.06664,"net_pct":0.06247,"hold_days":262.5,"share_of_profit":0.02595,"sells":2,"last_sell":"2026-06-12"},{"symbol":"PDR","sector":"Bất động sản","gross_pct":0.0265,"net_pct":0.02243,"hold_days":262.09234,"share_of_profit":0.01644,"sells":5,"last_sell":"2025-07-29"},{"symbol":"MSN","sector":"Hàng tiêu dùng","gross_pct":0.00728,"net_pct":0.00326,"hold_days":20.0,"share_of_profit":0.00154,"sells":3,"last_sell":"2024-12-05"}],"trades":[{"date":"2024-02-20","symbol":"HDB","net_pct":0.5049,"hold_days":373.26667,"vnindex_pct":0.1656,"excess_pct":0.3393},{"date":"2024-02-20","symbol":"HDB","net_pct":0.49852,"hold_days":310.6,"vnindex_pct":0.16827,"excess_pct":0.33025},{"date":"2024-02-22","symbol":"AMV","net_pct":0.10384,"hold_days":381.0,"vnindex_pct":0.12671,"excess_pct":-0.02287},{"date":"2024-02-22","symbol":"AMV","net_pct":0.10384,"hold_days":381.0,"vnindex_pct":0.12671,"excess_pct":-0.02287},{"date":"2024-02-22","symbol":"AMV","net_pct":0.10384,"hold_days":381.0,"vnindex_pct":0.12671,"excess_pct":-0.02287},{"date":"2024-11-26","symbol":"MSN","net_pct":0.00153,"hold_days":18.0,"vnindex_pct":-0.00833,"excess_pct":0.00986},{"date":"2024-11-26","symbol":"MSN","net_pct":0.00845,"hold_days":18.0,"vnindex_pct":-0.00833,"excess_pct":0.01678},{"date":"2024-12-05","symbol":"MSN","net_pct":0.00153,"hold_days":22.0,"vnindex_pct":0.01725,"excess_pct":-0.01571},{"date":"2024-12-25","symbol":"TPB","net_pct":0.07612,"hold_days":295.0,"vnindex_pct":0.0032,"excess_pct":0.07293},{"date":"2024-12-27","symbol":"TPB","net_pct":0.09548,"hold_days":296.4,"vnindex_pct":0.00983,"excess_pct":0.08565},{"date":"2025-02-11","symbol":"TPB","net_pct":0.09548,"hold_days":340.0,"vnindex_pct":0.01692,"excess_pct":0.07857},{"date":"2025-02-11","symbol":"TPB","net_pct":0.09871,"hold_days":340.0,"vnindex_pct":0.01692,"excess_pct":0.08179},{"date":"2025-07-29","symbol":"PDR","net_pct":0.02462,"hold_days":374.68,"vnindex_pct":0.18077,"excess_pct":-0.15614},{"date":"2025-07-29","symbol":"PDR","net_pct":0.02462,"hold_days":230.0,"vnindex_pct":0.17697,"excess_pct":-0.15234},{"date":"2025-07-29","symbol":"PDR","net_pct":0.02008,"hold_days":223.504,"vnindex_pct":0.18363,"excess_pct":-0.16355},{"date":"2025-07-29","symbol":"PDR","net_pct":0.02008,"hold_days":223.0,"vnindex_pct":0.17963,"excess_pct":-0.15954},{"date":"2025-07-29","symbol":"PDR","net_pct":0.0269,"hold_days":223.0,"vnindex_pct":0.17963,"excess_pct":-0.15273},{"date":"2025-12-29","symbol":"PVS","net_pct":0.1878,"hold_days":87.0,"vnindex_pct":0.06624,"excess_pct":0.12156},{"date":"2025-12-31","symbol":"HDB","net_pct":0.3934,"hold_days":933.0,"vnindex_pct":0.59898,"excess_pct":-0.20557},{"date":"2025-12-31","symbol":"HDB","net_pct":0.3934,"hold_days":933.0,"vnindex_pct":0.59898,"excess_pct":-0.20557},{"date":"2026-01-06","symbol":"PVS","net_pct":0.23524,"hold_days":95.0,"vnindex_pct":0.10357,"excess_pct":0.13168},{"date":"2026-01-12","symbol":"MBS","net_pct":0.13322,"hold_days":284.0,"vnindex_pct":0.52648,"excess_pct":-0.39326},{"date":"2026-01-12","symbol":"MBS","net_pct":0.13322,"hold_days":284.0,"vnindex_pct":0.52648,"excess_pct":-0.39326},{"date":"2026-01-12","symbol":"MBS","net_pct":0.13322,"hold_days":284.0,"vnindex_pct":0.52648,"excess_pct":-0.39326},{"date":"2026-01-12","symbol":"MBS","net_pct":0.13322,"hold_days":214.86875,"vnindex_pct":0.42741,"excess_pct":-0.29419},{"date":"2026-01-21","symbol":"HDB","net_pct":0.43684,"hold_days":811.60136,"vnindex_pct":0.81352,"excess_pct":-0.37667},{"date":"2026-01-21","symbol":"HDB","net_pct":0.42719,"hold_days":223.70417,"vnindex_pct":0.43358,"excess_pct":-0.00639},{"date":"2026-03-06","symbol":"PVS","net_pct":0.77738,"hold_days":154.0,"vnindex_pct":0.07414,"excess_pct":0.70324},{"date":"2026-03-06","symbol":"PVS","net_pct":0.77738,"hold_days":154.0,"vnindex_pct":0.07414,"excess_pct":0.70324},{"date":"2026-03-06","symbol":"PVS","net_pct":0.77738,"hold_days":154.0,"vnindex_pct":0.07414,"excess_pct":0.70324},{"date":"2026-06-12","symbol":"ACB","net_pct":0.06051,"hold_days":263.0,"vnindex_pct":0.09618,"excess_pct":-0.03567},{"date":"2026-06-12","symbol":"ACB","net_pct":0.06444,"hold_days":262.0,"vnindex_pct":0.09564,"excess_pct":-0.0312}],"timeline":[{"date":"2023-02-28","Y tế":0.51176,"Ngân hàng":0.48824},{"date":"2023-03-31","Y tế":0.51176,"Ngân hàng":0.48824},{"date":"2023-04-30","Y tế":0.51176,"Ngân hàng":0.48824},{"date":"2023-05-31","Y tế":0.52632,"Ngân hàng":0.47368},{"date":"2023-06-30","Y tế":0.22727,"Ngân hàng":0.77273},{"date":"2023-07-31","Y tế":0.22727,"Ngân hàng":0.77273},{"date":"2023-08-31","Y tế":0.22727,"Ngân hàng":0.77273},{"date":"2023-09-30","Y tế":0.22727,"Ngân hàng":0.77273},{"date":"2023-10-31","Y tế":0.22727,"Ngân hàng":0.77273},{"date":"2023-11-30","Y tế":0.22727,"Ngân hàng":0.77273},{"date":"2023-12-31","Y tế":0.22727,"Ngân hàng":0.77273},{"date":"2024-01-31","Y tế":0.19397,"Ngân hàng":0.6595,"Bất động sản":0.14653},{"date":"2024-02-29","Y tế":0.14757,"Ngân hàng":0.62949,"Bất động sản":0.22294},{"date":"2024-03-31","Y tế":0.05857,"Ngân hàng":0.85294,"Bất động sản":0.08849},{"date":"2024-04-30","Y tế":0.05857,"Ngân hàng":0.85294,"Bất động sản":0.08849},{"date":"2024-05-31","Y tế":0.05824,"Ngân hàng":0.84811,"Bất động sản":0.09365},{"date":"2024-06-30","Y tế":0.05917,"Ngân hàng":0.84568,"Bất động sản":0.09515},{"date":"2024-07-31","Y tế":0.06014,"Ngân hàng":0.84315,"Bất động sản":0.09671},{"date":"2024-08-31","Y tế":0.06014,"Ngân hàng":0.84315,"Bất động sản":0.09671},{"date":"2024-09-30","Y tế":0.06014,"Ngân hàng":0.84315,"Bất động sản":0.09671},{"date":"2024-10-31","Y tế":0.06014,"Ngân hàng":0.84315,"Bất động sản":0.09671},{"date":"2024-11-30","Y tế":0.04872,"Ngân hàng":0.68305,"Bất động sản":0.07835,"Hàng tiêu dùng":0.18988},{"date":"2024-12-31","Y tế":0.04099,"Ngân hàng":0.46345,"Bất động sản":0.49556},{"date":"2025-01-31","Y tế":0.03628,"Ngân hàng":0.52514,"Bất động sản":0.43859},{"date":"2025-02-28","Y tế":0.04276,"Ngân hàng":0.4403,"Bất động sản":0.51694},{"date":"2025-03-31","Y tế":0.04276,"Ngân hàng":0.4403,"Bất động sản":0.51694},{"date":"2025-04-30","Y tế":0.03591,"Ngân hàng":0.36979,"Bất động sản":0.43415,"Chứng khoán":0.16015},{"date":"2025-05-31","Y tế":0.03116,"Ngân hàng":0.32083,"Bất động sản":0.37668,"Chứng khoán":0.27133},{"date":"2025-06-30","Y tế":0.03116,"Ngân hàng":0.32083,"Bất động sản":0.37668,"Chứng khoán":0.27133},{"date":"2025-07-31","Y tế":0.04999,"Ngân hàng":0.51472,"Chứng khoán":0.4353},{"date":"2025-08-31","Y tế":0.05098,"Ngân hàng":0.52493,"Chứng khoán":0.42409},{"date":"2025-09-30","Y tế":0.01269,"Ngân hàng":0.84298,"Chứng khoán":0.14433},{"date":"2025-10-31","Y tế":0.00988,"Ngân hàng":0.69709,"Chứng khoán":0.20888,"Dầu khí":0.08415},{"date":"2025-11-30","Y tế":0.00881,"Ngân hàng":0.72987,"Chứng khoán":0.18627,"Dầu khí":0.07504},{"date":"2025-12-31","Y tế":0.00911,"Ngân hàng":0.74977,"Chứng khoán":0.19982,"Dầu khí":0.0413},{"date":"2026-01-31","Y tế":0.01239,"Ngân hàng":0.74305,"Dầu khí":0.0069,"Chứng khoán":0.23767},{"date":"2026-02-28","Y tế":0.0157,"Ngân hàng":0.70708,"Dầu khí":0.00548,"Chứng khoán":0.27174},{"date":"2026-03-31","Y tế":0.01578,"Ngân hàng":0.71098,"Chứng khoán":0.27324},{"date":"2026-04-30","Y tế":0.01578,"Ngân hàng":0.71098,"Chứng khoán":0.27324},{"date":"2026-05-31","Y tế":0.01578,"Ngân hàng":0.71098,"Chứng khoán":0.27324},{"date":"2026-06-30","Y tế":0.01695,"Ngân hàng":0.68964,"Chứng khoán":0.29342},{"date":"2026-07-31","Y tế":0.01695,"Ngân hàng":0.68964,"Chứng khoán":0.29342},{"date":"2026-08-31","Y tế":0.0171,"Ngân hàng":0.69604,"Chứng khoán":0.28686},{"date":"2026-09-30","Y tế":0.0171,"Ngân hàng":0.69604,"Chứng khoán":0.28686},{"date":"2026-10-31","Y tế":0.0171,"Ngân hàng":0.69604,"Chứng khoán":0.28686},{"date":"2026-11-03","Y tế":0.0171,"Ngân hàng":0.69604,"Chứng khoán":0.28686}],"events":[{"date":"2023-05-29","symbol":"HDB","type":"cash","description":"Cổ tức tiền mặt năm 2022 (10%)","share_increase":0.0,"cost_change":-0.05666},{"date":"2023-07-19","symbol":"HDB","type":"stock","description":"Cổ tức cổ phiếu năm 2022 (100:15)","share_increase":0.15,"cost_change":-0.13043},{"date":"2024-05-10","symbol":"PDR","type":"rights","description":"Quyền mua 55:10 giá 10.000đ (ngày theo Simplize)","share_increase":0.18,"cost_change":-0.09797},{"date":"2024-06-20","symbol":"TPB","type":"cash","description":"Cổ tức tiền mặt 5% (ngày theo Simplize)","share_increase":0.0,"cost_change":-0.02625},{"date":"2024-07-12","symbol":"HDB","type":"cash","description":"Cổ tức tiền mặt năm 2023 (10%)","share_increase":0.0,"cost_change":-0.06399},{"date":"2024-09-23","symbol":"TPB","type":"stock","description":"Cổ tức cổ phiếu 100:20 (ngày theo Simplize)","share_increase":0.2,"cost_change":-0.16667},{"date":"2024-12-11","symbol":"HDB","type":"stock","description":"Cổ tức cổ phiếu năm 2023 (100:20)","share_increase":0.2,"cost_change":-0.16667},{"date":"2025-08-19","symbol":"MBS","type":"cash","description":"Cổ tức tiền mặt năm 2024 (12%) (ngày theo Simplize)","share_increase":0.0,"cost_change":-0.04469},{"date":"2025-09-24","symbol":"MBS","type":"stock","description":"Cổ phiếu thưởng 100:3 (ngày theo Simplize)","share_increase":0.03,"cost_change":-0.02913},{"date":"2025-09-24","symbol":"MBS","type":"rights","description":"Quyền mua 100:12 giá 10.000đ (ngày theo Simplize)","share_increase":0.12,"cost_change":-0.06245},{"date":"2025-11-27","symbol":"PVS","type":"stock","description":"Cổ tức cổ phiếu năm 2024 (100:7)","share_increase":0.07,"cost_change":-0.06542},{"date":"2025-12-08","symbol":"SSI","type":"rights","description":"Quyền mua 5:1 giá 15.000đ (nộp tiền 17/12/2025-08/01/2026)","share_increase":0.2,"cost_change":-0.09741},{"date":"2025-12-18","symbol":"HDB","type":"stock","description":"Cổ tức cổ phiếu năm 2024 (25%) + cổ phiếu thưởng (4.69%)","share_increase":0.29684,"cost_change":-0.2289},{"date":"2026-06-15","symbol":"ACB","type":"cash","description":"Cổ tức tiền mặt năm 2025 (7%)","share_increase":0.0,"cost_change":-0.0276},{"date":"2026-06-15","symbol":"ACB","type":"stock","description":"Cổ tức cổ phiếu năm 2025 (100:13)","share_increase":0.13,"cost_change":-0.11504},{"date":"2026-08-17","symbol":"SSI","type":"cash","description":"Cổ tức tiền mặt năm 2025 (10%)","share_increase":0.0,"cost_change":-0.03133},{"date":"2026-08-17","symbol":"SSI","type":"stock","description":"Cổ phiếu thưởng 5:1","share_increase":0.2,"cost_change":-0.16667},{"date":"2026-10-09","symbol":"HDB","type":"stock","description":"Cổ tức cổ phiếu năm 2025 (25%) + cổ phiếu thưởng (5%) - đang chờ giao dịch (HDB_WFT)","share_increase":0.3,"cost_change":-0.23077}],"insights":["Toàn bộ 32 lệnh bán đều có lãi, nhưng 3/4 vị thế đang mở bị lỗ (SSI -25,7%, AMV -59,3%). Tỷ lệ thắng 100% phản ánh việc chưa cắt lỗ hơn là việc chưa từng sai.","HDB đóng góp 67% lãi đã thực hiện (+43,8%) và hiện chiếm 77% danh mục. Một phần đáng kể lợi nhuận đến từ cổ tức cổ phiếu (15%, 20%, gần 30%, 30%).","Phí và thuế làm giảm lãi đã thực hiện khoảng 0,5 điểm %, thấp vì tần suất giao dịch thấp (78 lệnh trong gần 4 năm, nắm giữ bình quân 334 ngày).","Danh mục rất tập trung: chỉ số HHI 0.63, tương đương 1.6 mã có tỷ trọng bằng nhau; ngân hàng chiếm 80%.","PVS bán ở +19–24% sau khoảng 3 tháng, trong khi 70 cổ phiếu lẻ còn lại bán sau đó ở mức +77,7%. Đây là ví dụ chốt lời sớm so với luận điểm ban đầu.","So với VN-Index: XIRR danh mục +18,7%/năm so với +11,6%/năm nếu cùng dòng tiền mua chỉ số (PME 1,12). Nhưng chỉ 13/32 lệnh bán có lãi cao hơn chỉ số cùng kỳ: phần thắng chủ yếu nhờ HDB (XIRR riêng khoảng 34%/năm), còn nhiều lệnh bán (PDR, MBS, HDB 12/2025–01/2026) thoát ra trong giai đoạn thị trường tăng mạnh."],"benchmark":{"xirr_vnindex":0.11602,"pme_ratio":1.12014,"sells_beating_index":13,"n_sells":32,"index_series":[{"date":"2023-02-06","close":1089.3},{"date":"2023-02-13","close":1043.7},{"date":"2023-02-20","close":1086.7},{"date":"2023-02-27","close":1021.2},{"date":"2023-03-06","close":1027.2},{"date":"2023-03-13","close":1052.8},{"date":"2023-03-20","close":1023.1},{"date":"2023-03-27","close":1052.2},{"date":"2023-04-03","close":1079.3},{"date":"2023-04-10","close":1065.3},{"date":"2023-04-17","close":1053.8},{"date":"2023-04-24","close":1041.4},{"date":"2023-05-04","close":1040.6},{"date":"2023-05-11","close":1057.1},{"date":"2023-05-18","close":1068.3},{"date":"2023-05-25","close":1064.6},{"date":"2023-06-01","close":1078.4},{"date":"2023-06-08","close":1101.3},{"date":"2023-06-15","close":1117.0},{"date":"2023-06-22","close":1125.3},{"date":"2023-06-29","close":1125.4},{"date":"2023-07-06","close":1126.2},{"date":"2023-07-13","close":1165.4},{"date":"2023-07-20","close":1172.8},{"date":"2023-07-27","close":1197.3},{"date":"2023-08-03","close":1211.0},{"date":"2023-08-10","close":1220.6},{"date":"2023-08-17","close":1233.5},{"date":"2023-08-24","close":1189.4},{"date":"2023-08-31","close":1224.0},{"date":"2023-09-11","close":1223.6},{"date":"2023-09-18","close":1211.8},{"date":"2023-09-25","close":1153.2},{"date":"2023-10-02","close":1155.2},{"date":"2023-10-09","close":1137.4},{"date":"2023-10-16","close":1141.4},{"date":"2023-10-23","close":1093.5},{"date":"2023-10-30","close":1042.4},{"date":"2023-11-06","close":1089.7},{"date":"2023-11-13","close":1100.1},{"date":"2023-11-20","close":1103.7},{"date":"2023-11-27","close":1088.1},{"date":"2023-12-04","close":1120.5},{"date":"2023-12-11","close":1125.5},{"date":"2023-12-18","close":1091.9},{"date":"2023-12-25","close":1117.7},{"date":"2024-01-02","close":1131.7},{"date":"2024-01-09","close":1158.6},{"date":"2024-01-16","close":1163.1},{"date":"2024-01-23","close":1177.5},{"date":"2024-01-30","close":1179.7},{"date":"2024-02-06","close":1188.5},{"date":"2024-02-20","close":1230.1},{"date":"2024-02-27","close":1237.5},{"date":"2024-03-05","close":1270.0},{"date":"2024-03-12","close":1245.0},{"date":"2024-03-19","close":1242.5},{"date":"2024-03-26","close":1282.2},{"date":"2024-04-02","close":1287.0},{"date":"2024-04-09","close":1262.8},{"date":"2024-04-16","close":1215.7},{"date":"2024-04-24","close":1205.6},{"date":"2024-05-06","close":1241.6},{"date":"2024-05-13","close":1240.2},{"date":"2024-05-20","close":1277.6},{"date":"2024-05-27","close":1267.7},{"date":"2024-06-03","close":1280.0},{"date":"2024-06-10","close":1290.7},{"date":"2024-06-17","close":1274.8},{"date":"2024-06-24","close":1254.1},{"date":"2024-07-01","close":1254.6},{"date":"2024-07-08","close":1283.6},{"date":"2024-07-15","close":1279.8},{"date":"2024-07-22","close":1254.6},{"date":"2024-07-29","close":1246.6},{"date":"2024-08-05","close":1188.1},{"date":"2024-08-12","close":1230.3},{"date":"2024-08-19","close":1261.6},{"date":"2024-08-26","close":1280.0},{"date":"2024-09-04","close":1275.8},{"date":"2024-09-11","close":1253.3},{"date":"2024-09-18","close":1264.9},{"date":"2024-09-25","close":1287.5},{"date":"2024-10-02","close":1287.8},{"date":"2024-10-09","close":1281.8},{"date":"2024-10-16","close":1279.5},{"date":"2024-10-23","close":1270.9},{"date":"2024-10-30","close":1258.6},{"date":"2024-11-06","close":1261.3},{"date":"2024-11-13","close":1246.0},{"date":"2024-11-20","close":1216.5},{"date":"2024-11-27","close":1242.0},{"date":"2024-12-04","close":1240.4},{"date":"2024-12-11","close":1268.9},{"date":"2024-12-18","close":1266.0},{"date":"2024-12-25","close":1274.0},{"date":"2025-01-02","close":1269.7},{"date":"2025-01-09","close":1245.8},{"date":"2025-01-16","close":1242.4},{"date":"2025-01-23","close":1259.6},{"date":"2025-02-06","close":1271.5},{"date":"2025-02-13","close":1270.3},{"date":"2025-02-20","close":1293.0},{"date":"2025-02-27","close":1307.8},{"date":"2025-03-06","close":1318.2},{"date":"2025-03-13","close":1326.3},{"date":"2025-03-20","close":1323.9},{"date":"2025-03-27","close":1323.8},{"date":"2025-04-03","close":1229.8},{"date":"2025-04-11","close":1222.5},{"date":"2025-04-18","close":1219.1},{"date":"2025-04-25","close":1229.2},{"date":"2025-05-07","close":1250.4},{"date":"2025-05-14","close":1309.7},{"date":"2025-05-21","close":1323.0},{"date":"2025-05-28","close":1341.9},{"date":"2025-06-04","close":1345.7},{"date":"2025-06-11","close":1315.2},{"date":"2025-06-18","close":1346.8},{"date":"2025-06-25","close":1366.8},{"date":"2025-07-02","close":1384.6},{"date":"2025-07-09","close":1431.3},{"date":"2025-07-16","close":1475.5},{"date":"2025-07-23","close":1512.3},{"date":"2025-07-30","close":1507.6},{"date":"2025-08-06","close":1573.7},{"date":"2025-08-13","close":1611.6},{"date":"2025-08-20","close":1664.4},{"date":"2025-08-27","close":1672.8},{"date":"2025-09-05","close":1667.0},{"date":"2025-09-12","close":1667.3},{"date":"2025-09-19","close":1658.6},{"date":"2025-09-26","close":1660.7},{"date":"2025-10-03","close":1645.8},{"date":"2025-10-10","close":1747.5},{"date":"2025-10-17","close":1731.2},{"date":"2025-10-24","close":1683.2},{"date":"2025-10-31","close":1639.7},{"date":"2025-11-07","close":1599.1},{"date":"2025-11-14","close":1635.5},{"date":"2025-11-21","close":1654.9},{"date":"2025-11-28","close":1691.0},{"date":"2025-12-05","close":1741.3},{"date":"2025-12-12","close":1646.9},{"date":"2025-12-19","close":1704.3},{"date":"2025-12-26","close":1729.8},{"date":"2026-01-06","close":1816.3},{"date":"2026-01-13","close":1902.9},{"date":"2026-01-20","close":1893.8},{"date":"2026-01-27","close":1830.5},{"date":"2026-02-03","close":1813.4},{"date":"2026-02-10","close":1754.0},{"date":"2026-02-24","close":1867.6},{"date":"2026-03-03","close":1813.1},{"date":"2026-03-10","close":1676.7},{"date":"2026-03-17","close":1710.3},{"date":"2026-03-24","close":1614.8},{"date":"2026-03-31","close":1674.5},{"date":"2026-04-07","close":1677.5},{"date":"2026-04-14","close":1775.7},{"date":"2026-04-21","close":1833.5},{"date":"2026-04-29","close":1854.1},{"date":"2026-05-08","close":1915.4},{"date":"2026-05-15","close":1921.6},{"date":"2026-05-22","close":1877.1},{"date":"2026-05-29","close":1863.5},{"date":"2026-06-05","close":1838.9},{"date":"2026-06-12","close":1791.7},{"date":"2026-06-19","close":1824.5},{"date":"2026-06-26","close":1871.9},{"date":"2026-07-03","close":1862.1},{"date":"2026-07-10","close":1828.3},{"date":"2026-07-17","close":1787.5},{"date":"2026-07-24","close":1686.1},{"date":"2026-07-31","close":1735.8},{"date":"2026-08-07","close":1768.1},{"date":"2026-08-14","close":1729.1},{"date":"2026-08-21","close":1768.1},{"date":"2026-08-28","close":1832.1},{"date":"2026-09-09","close":1827.1},{"date":"2026-09-16","close":1810.1},{"date":"2026-09-23","close":1801.7},{"date":"2026-09-30","close":1768.6},{"date":"2026-10-07","close":1753.4},{"date":"2026-10-14","close":1704.9},{"date":"2026-10-21","close":1738.7},{"date":"2026-10-28","close":1766.7}]}};
+(function(){
+const $ = s => document.querySelector(s);
+const pct = (x, d=1, sign=false) => (sign && x>0 ? '+' : '') + (x*100).toFixed(d).replace('.', ',') + '%';
+const pctS = (x,d=1) => (x>0?'+':x<0?'−':'') + Math.abs(x*100).toFixed(d).replace('.', ',') + '%';
+const vnd = x => Math.round(x).toLocaleString('de-DE');
+const fmtD = s => { const [y,m,d] = s.split('-'); return d+'/'+m+'/'+y; };
+const cls = x => x>=0 ? 'pos' : 'neg';
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs={}, parent){ const e=document.createElementNS(NS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); if(parent) parent.appendChild(e); return e; }
+const K = D.kpi, B = D.benchmark;
+
+// facts + KPIs
+$('#f-hold').textContent = Math.round(K.avg_hold_days) + ' ngày';
+$('#f-open').textContent = D.current.length + ' (đang lỗ: ' + K.open_losers + ')';
+const kpis = [
+  ['XIRR sau phí', pctS(K.xirr_net), 'VN-Index cùng dòng tiền: ' + pctS(B.xirr_vnindex) + '/năm'],
+  ['PME so với VN-Index', B.pme_ratio.toFixed(2).replace('.', ','), 'Trên 1 nghĩa là vượt chỉ số'],
+  ['Lãi đã thực hiện', pctS(K.realized_net_pct), K.n_sells + ' lô bán, sau phí và thuế'],
+  ['Lãi chưa thực hiện', pctS(K.unrealized_pct), 'Tỷ trọng lớn nhất: ' + K.top_symbol + ' ' + pct(K.top_weight,0)],
+];
+$('#kpis').innerHTML = kpis.map(([k,v,s]) => `<div class="kpi"><span class="k">${k}</span><span class="v num">${v}</span><span class="s">${s}</span></div>`).join('');
+
+// insights, tagged
+const tags = [['t-watch','Cần lưu ý'],['t-fact','Nguồn lãi'],['t-good','Chi phí'],['t-watch','Tập trung'],['t-watch','Chốt sớm'],['t-fact','So chỉ số']];
+$('#notes').innerHTML = D.insights.map((t,i)=>`<li><span class="tag ${tags[i]?.[0]||'t-fact'}">${tags[i]?.[1]||''}</span><span>${t}</span></li>`).join('');
+
+// tooltip helper
+function tipFor(box){ const t=document.createElement('div'); t.className='tip'; t.hidden=true; box.appendChild(t);
+  return { show(html,x,y){ t.innerHTML=html; t.hidden=false; const w=box.clientWidth; const tw=t.offsetWidth; const cx=Math.min(Math.max(x, tw/2+4), w-tw/2-4); t.style.left=cx+'px'; t.style.top=y+'px'; }, hide(){ t.hidden=true; } }; }
+
+// ---------- XIRR bars ----------
+function drawXirr(){
+  const box=$('#c-xirr'); box.innerHTML=''; const W=box.clientWidth||480;
+  const rows=[['Danh mục, trước phí',K.xirr_gross,'--s1'],['Danh mục, sau phí',K.xirr_net,'--s1'],['VN-Index, cùng dòng tiền',B.xirr_vnindex,'--muted']];
+  const lw=Math.min(170, W*.42), H=rows.length*44+10, max=.22, x=v=>lw+ v/max*(W-lw-60);
+  const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'XIRR danh mục so với VN-Index'},box);
+  rows.forEach(([lab,v,c],i)=>{ const y=10+i*44;
+    el('text',{x:0,y:y+17,'font-size':12.5,style:'fill:var(--ink2)'},svg).textContent=lab;
+    el('rect',{x:lw,y:y+4,width:Math.max(2,x(v)-lw),height:18,rx:2,fill:css(c)},svg);
+    const t=el('text',{x:x(v)+8,y:y+18,'font-size':13,'font-weight':600,style:'fill:var(--ink)'},svg); t.textContent=pctS(v)+'/năm';
+  });
+}
+
+// ---------- VN-Index + sells ----------
+const sells = (()=>{ const m=new Map(); D.trades.forEach(t=>{ const k=t.date+'|'+t.symbol; if(!m.has(k)) m.set(k,{date:t.date,symbol:t.symbol,n:0,net:0,hold:0,idx:0}); const r=m.get(k); r.n++; r.net+=t.net_pct; r.hold+=t.hold_days; r.idx+=t.vnindex_pct; });
+  return [...m.values()].map(r=>({...r,net:r.net/r.n,hold:r.hold/r.n,idx:r.idx/r.n,ex:(r.net-r.idx*1)/1})).map(r=>({...r,ex:r.net-r.idx})); })();
+function drawIndex(){
+  const box=$('#c-index'); box.innerHTML=''; const W=box.clientWidth||900, H=Math.max(240, Math.min(340, W*.38));
+  const m={l:44,r:12,t:12,b:26}; const S=B.index_series; const t0=+new Date(S[0].date), t1=+new Date(S[S.length-1].date);
+  const ys=S.map(p=>p.close), lo=Math.floor(Math.min(...ys)/200)*200, hi=Math.ceil(Math.max(...ys)/200)*200;
+  const X=d=>m.l+(+new Date(d)-t0)/(t1-t0)*(W-m.l-m.r), Y=v=>m.t+(hi-v)/(hi-lo)*(H-m.t-m.b);
+  const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'VN-Index và các thời điểm bán'},box);
+  const g=el('g',{class:'grid'},svg);
+  for(let v=lo; v<=hi; v+=200){ el('line',{x1:m.l,x2:W-m.r,y1:Y(v),y2:Y(v)},g); el('text',{x:m.l-6,y:Y(v)+4,'text-anchor':'end'},svg).textContent=v.toLocaleString('de-DE'); }
+  for(let y=2023;y<=2026;y++){ const d=y+'-01-01'; const xx= y===2023? X(S[0].date): X(d); el('text',{x:xx,y:H-6,'text-anchor':y===2023?'start':'middle'},svg).textContent=y; if(y>2023) el('line',{x1:xx,x2:xx,y1:H-m.b,y2:H-m.b+4,stroke:css('--muted')},svg); }
+  el('path',{d:S.map((p,i)=>(i?'L':'M')+X(p.date).toFixed(1)+','+Y(p.close).toFixed(1)).join(''),fill:'none',stroke:css('--ink2'),'stroke-width':2,'stroke-linejoin':'round'},svg);
+  const near=d=>{ const t=+new Date(d); let best=S[0]; for(const p of S){ if(Math.abs(+new Date(p.date)-t)<Math.abs(+new Date(best.date)-t)) best=p; } return best.close; };
+  const tip=tipFor(box);
+  sells.forEach(s=>{ const cx=X(s.date), cy=Y(near(s.date)); const c=el('circle',{cx,cy,r:6,fill:css(s.ex>=0?'--pos':'--neg'),stroke:css('--bg'),'stroke-width':2,tabindex:0},svg);
+    const hit=el('circle',{cx,cy,r:13,fill:'transparent',style:'cursor:pointer'},svg);
+    const html=`<b>${s.symbol}</b> · ${fmtD(s.date)}${s.n>1?' · '+s.n+' lô':''}<br>Lãi ròng ${pctS(s.net)} sau ${Math.round(s.hold)} ngày<br>VN-Index cùng kỳ ${pctS(s.idx)}`;
+    const on=()=>tip.show(html,cx/W*box.clientWidth,cy/H*box.clientHeight), off=()=>tip.hide();
+    [hit,c].forEach(e=>{e.addEventListener('pointerenter',on); e.addEventListener('pointerleave',off); e.addEventListener('focus',on); e.addEventListener('blur',off);});
+  });
+}
+
+// ---------- sector stacked area ----------
+const SECT=['Ngân hàng','Chứng khoán','Y tế','Dầu khí','Bất động sản','Hàng tiêu dùng'];
+const SCOL=['--s1','--s2','--s3','--s4','--s5','--s6'];
+$('#sec-legend').innerHTML=SECT.map((s,i)=>`<li><i style="background:var(${SCOL[i]})"></i>${s}</li>`).join('');
+function drawSector(){
+  const box=$('#c-sector'); box.innerHTML=''; const W=box.clientWidth||900, H=Math.max(200, Math.min(280, W*.3));
+  const m={l:40,r:12,t:8,b:26}, T=D.timeline, n=T.length;
+  const X=i=>m.l+i/(n-1)*(W-m.l-m.r), Y=v=>m.t+(1-v)*(H-m.t-m.b);
+  const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Tỷ trọng danh mục theo ngành'},box);
+  const g=el('g',{class:'grid'},svg);
+  [0,.25,.5,.75,1].forEach(v=>{ el('line',{x1:m.l,x2:W-m.r,y1:Y(v),y2:Y(v)},g); el('text',{x:m.l-6,y:Y(v)+4,'text-anchor':'end'},svg).textContent=(v*100)+'%'; });
+  const base=new Array(n).fill(0);
+  SECT.forEach((s,k)=>{ const top=T.map((p,i)=>base[i]+(p[s]||0)); if(top.every((v,i)=>v===base[i])) return;
+    const d='M'+T.map((p,i)=>X(i).toFixed(1)+','+Y(top[i]).toFixed(1)).join('L')+'L'+T.map((p,i)=>X(n-1-i).toFixed(1)+','+Y(base[n-1-i]).toFixed(1)).join('L')+'Z';
+    el('path',{d,fill:css(SCOL[k]),stroke:css('--bg'),'stroke-width':1.5,'stroke-linejoin':'round'},svg); top.forEach((v,i)=>base[i]=v); });
+  T.forEach((p,i)=>{ if(p.date.slice(5,7)==='01'||i===0){ el('text',{x:X(i),y:H-6,'text-anchor':i===0?'start':'middle'},svg).textContent=p.date.slice(0,4); } });
+  const tip=tipFor(box), cross=el('line',{y1:m.t,y2:H-m.b,stroke:css('--ink'),'stroke-width':1,visibility:'hidden'},svg);
+  const ov=el('rect',{x:m.l,y:m.t,width:W-m.l-m.r,height:H-m.t-m.b,fill:'transparent'},svg);
+  ov.addEventListener('pointermove',e=>{ const r=svg.getBoundingClientRect(); const px=(e.clientX-r.left)/r.width*W; const i=Math.max(0,Math.min(n-1,Math.round((px-m.l)/(W-m.l-m.r)*(n-1)))); const p=T[i];
+    cross.setAttribute('x1',X(i)); cross.setAttribute('x2',X(i)); cross.setAttribute('visibility','visible');
+    const lines=SECT.filter(s=>p[s]>0.0005).map(s=>`${s}: ${pct(p[s],0)}`).join('<br>');
+    tip.show(`<b>${p.date.slice(5,7)}/${p.date.slice(0,4)}</b><br>${lines}`, X(i)/W*box.clientWidth, m.t+20); });
+  ov.addEventListener('pointerleave',()=>{tip.hide(); cross.setAttribute('visibility','hidden');});
+}
+
+// ---------- valuation football field ----------
+function drawVal(){
+  const box=$('#c-val'); box.innerHTML=''; const W=box.clientWidth||560;
+  const rows=[['Residual Income',26883],['FCFE',26429],['P/B hợp lý',25678],['Nội tại (bình quân)',26468],['Mục tiêu 12T',29700]];
+  const lw=Math.min(140,W*.36), H=rows.length*30+34, lo=15000, hi=32000, X=v=>lw+(v-lo)/(hi-lo)*(W-lw-56);
+  const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Giá trị HDB theo phương pháp'},box);
+  const g=el('g',{class:'grid'},svg);
+  [15000,20000,25000,30000].forEach(v=>{ el('line',{x1:X(v),x2:X(v),y1:4,y2:H-22},g); el('text',{x:X(v),y:H-6,'text-anchor':'middle'},svg).textContent=(v/1000)+'k'; });
+  // bear-bull range
+  el('rect',{x:X(17700),y:4,width:X(31100)-X(17700),height:H-26,fill:css('--soft')},svg).parentNode.insertBefore(svg.lastChild, svg.childNodes[0]);
+  rows.forEach(([lab,v],i)=>{ const y=8+i*30; const strong=i>=3;
+    el('text',{x:0,y:y+14,'font-size':12.5,style:`fill:var(--ink${strong?'':'2'})`,'font-weight':strong?600:400},svg).textContent=lab;
+    el('rect',{x:lw,y:y+4,width:X(v)-lw,height:14,rx:2,fill:css(i===4?'--pos':i===3?'--acc':'--s1')},svg);
+    el('text',{x:X(v)+6,y:y+15,'font-size':12,style:'fill:var(--ink)','font-weight':600},svg).textContent=vnd(v); });
+  el('line',{x1:X(21800),x2:X(21800),y1:2,y2:H-22,stroke:css('--ink'),'stroke-width':1.5,'stroke-dasharray':'4 3'},svg);
+  const lt=el('text',{x:X(21800)+4,y:H-24,'font-size':11,style:'fill:var(--ink)'},svg); lt.textContent='Giá 21.800';
+}
+
+// ---------- tables ----------
+const maxW=Math.max(...D.current.map(c=>c.weight));
+$('#t-current tbody').innerHTML=D.current.map(c=>`<tr><td class="sym">${c.symbol}</td><td>${c.sector}</td><td class="n"><span class="wbar"><i style="width:${(c.weight/maxW*70).toFixed(0)}px"></i>${pct(c.weight)}</span></td><td class="n ${cls(c.unrealized_pct)}">${pctS(c.unrealized_pct)}</td></tr>`).join('');
+$('#t-realized tbody').innerHTML=D.realized.map(r=>`<tr><td class="sym">${r.symbol}</td><td class="n ${cls(r.net_pct)}">${pctS(r.net_pct)}</td><td class="n">${Math.round(r.hold_days)} ngày</td><td class="n">${pct(r.share_of_profit,0)}</td></tr>`).join('');
+
+const syms=['Tất cả',...new Set(sells.map(s=>s.symbol))]; let cur='Tất cả';
+function renderTrades(){ $('#t-trades tbody').innerHTML=sells.filter(s=>cur==='Tất cả'||s.symbol===cur).map(s=>`<tr><td class="num">${fmtD(s.date)}</td><td class="sym">${s.symbol}</td><td class="n">${s.n}</td><td class="n ${cls(s.net)}">${pctS(s.net)}</td><td class="n">${Math.round(s.hold)} ngày</td><td class="n">${pctS(s.idx)}</td><td class="n"><span class="pill ${cls(s.ex)}">${s.ex>=0?'Vượt':'Kém'} ${pctS(s.ex)}</span></td></tr>`).join('');
+  document.querySelectorAll('#filters button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.s===cur)); }
+$('#filters').innerHTML=syms.map(s=>`<button type="button" id="flt-${s.replace(/\s/g,'')}" data-s="${s}" aria-pressed="false">${s}</button>`).join('');
+$('#filters').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; cur=b.dataset.s; renderTrades(); });
+renderTrades();
+
+const TYPE={cash:'Cổ tức tiền',stock:'Cổ phiếu',rights:'Quyền mua'};
+$('#ev-n').textContent=D.events.length;
+$('#t-events tbody').innerHTML=D.events.map(e=>`<tr><td class="num">${fmtD(e.date)}</td><td class="sym">${e.symbol}</td><td>${TYPE[e.type]||e.type}</td><td>${e.description.replace(/\s*\(ngày theo Simplize\)/,'')}</td><td class="n">${e.share_increase?pctS(e.share_increase):'–'}</td><td class="n">${pctS(e.cost_change)}</td></tr>`).join('');
+
+function drawAll(){ drawXirr(); drawIndex(); drawSector(); drawVal(); }
+drawAll();
+let rt; addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(drawAll,150); });
+if(matchMedia) matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',drawAll);
+new MutationObserver(drawAll).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+if(document.fonts) document.fonts.ready.then(drawAll);
+})();
+</script>
+</body>
+</html>
